@@ -11,7 +11,8 @@ RUN apt-get update && \
     curl \
     # R
     software-properties-common dirmngr \
-    automake libcurl4-openssl-dev \
+    automake libcurl4-openssl-dev libsodium-dev \
+    libblas-dev liblapack-dev gfortran \
     # python build dependencies \
     build-essential \
     libssl-dev \

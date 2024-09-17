@@ -138,8 +138,8 @@ def inference(text, progress=gr.Progress()):
 demo = gr.Blocks(
     title=title,
     analytics_enabled=False,
-    theme="huggingface",
-    # theme=gr.themes.Base(),
+    # theme="huggingface",
+    theme=gr.themes.Base(),
 )
 
 with demo:
