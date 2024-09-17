@@ -47,3 +47,9 @@ Build the Docker image:
 ```
 docker build -t r-with-gradio .
 ```
+
+Run:
+
+```
+docker run --rm -p 7860:7860 -it r-with-gradio
+```
