@@ -31,7 +31,6 @@ uv pip install -r requirements-dev.txt
 Run R server (for example):
 
 ```
-cd R
 r --no-save < start_api.R
 ```
 
