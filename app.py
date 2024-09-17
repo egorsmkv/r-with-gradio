@@ -10,12 +10,12 @@ import requests
 import gradio as gr
 
 
-def r_version():
-    return subprocess.run([r_bin_path, "--version"], capture_output=True, text=True)
+def r_version(r_bin):
+    return subprocess.run([r_bin, "--version"], capture_output=True, text=True)
 
 
-def start_r_api(r_bin):
-    command = [r_bin, "--no-save", "<", "start_api.R", "&"]
+def start_r_api(rscript_bin):
+    command = [rscript_bin, "start_api.R", "&"]
 
     print("Starting R API...")
     print(" ".join(command))
@@ -26,7 +26,8 @@ def start_r_api(r_bin):
 # Config
 concurrency_limit = 5
 r_api_url = "http://localhost:8077"
-r_bin_path = "/usr/bin/r"
+r_bin_path = "/usr/bin/R"
+rscript_bin_path = "/usr/bin/Rscript"
 
 examples = [
     """I begin this story with a neutral statement.  
@@ -78,7 +79,7 @@ tech_env = f"""
 - Python: {sys.version}
 """.strip()
 
-r_version_info = r_version()
+r_version_info = r_version(r_bin_path)
 if r_version_info.returncode != 0:
     print("Error: R version command failed.")
     exit(1)
@@ -171,7 +172,7 @@ with demo:
     gr.Markdown(tech_libraries)
 
 if __name__ == "__main__":
-    start_r_api(r_bin_path)
+    start_r_api(rscript_bin_path)
 
     demo.queue()
     demo.launch()

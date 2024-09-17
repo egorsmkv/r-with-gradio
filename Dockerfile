@@ -11,6 +11,7 @@ RUN apt-get update && \
     curl \
     # R
     software-properties-common dirmngr \
+    automake libcurl4-openssl-dev \
     # python build dependencies \
     build-essential \
     libssl-dev \
@@ -28,12 +29,14 @@ RUN apt-get update && \
     # gradio dependencies \
     ffmpeg
 
-RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | sudo tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
+RUN wget -qO- https://cloud.r-project.org/bin/linux/ubuntu/marutter_pubkey.asc | tee -a /etc/apt/trusted.gpg.d/cran_ubuntu_key.asc
 
-RUN apt install --no-install-recommends r-base
+RUN apt install -y --no-install-recommends r-base
 
-RUN apt-get clean \
-    && rm -rf /var/lib/apt/lists/*
+RUN apt-get clean && rm -rf /var/lib/apt/lists/*
+
+RUN R -e "install.packages('plumber', repos='https://cloud.r-project.org')"
+RUN R -e "install.packages('syuzhet', repos='https://cloud.r-project.org')"
 
 RUN useradd -m -u 1000 user
 USER user
@@ -41,11 +44,9 @@ ENV HOME=/home/user \
     PATH=/home/user/.local/bin:${PATH}
 WORKDIR ${HOME}/app
 
-RUN r --no-save < install_packages.R
-
 RUN curl https://pyenv.run | bash
 ENV PATH=${HOME}/.pyenv/shims:${HOME}/.pyenv/bin:${PATH}
-ARG PYTHON_VERSION=3.10.12
+ARG PYTHON_VERSION=3.12.5
 RUN pyenv install ${PYTHON_VERSION} && \
     pyenv global ${PYTHON_VERSION} && \
     pyenv rehash && \
@@ -60,8 +61,11 @@ ENV PYTHONPATH=${HOME}/app \
     PYTHONUNBUFFERED=1 \
     GRADIO_ALLOW_FLAGGING=never \
     GRADIO_NUM_PORTS=1 \
+    GRADIO_SERVER_PORT=7860 \
     GRADIO_SERVER_NAME=0.0.0.0 \
     GRADIO_THEME=huggingface \
     SYSTEM=spaces
+
+EXPOSE 7860
 
 CMD ["python", "app.py"]

@@ -12,7 +12,7 @@ Idea:
 Install R packages:
 
 ```
-r --no-save < install_packages.R
+Rscript install_packages.R
 ```
 
 Install Python packages:
@@ -31,7 +31,7 @@ uv pip install -r requirements-dev.txt
 Run R server (for example):
 
 ```
-r --no-save < start_api.R
+Rscript start_api.R
 ```
 
 Run Gradio app with automatically starting the R server (in fork mode):
