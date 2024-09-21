@@ -7,6 +7,10 @@ Idea:
 - Start an HTTP API server in R using the `plumber` package.
 - Call the API from Python using the `requests` package.
 
+## Demo
+
+<img src="./demo.jpeg" width="800">
+
 ## Installation
 
 Install R packages:
